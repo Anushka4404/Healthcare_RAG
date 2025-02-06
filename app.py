@@ -1,13 +1,13 @@
 import streamlit as st
 import os
-from langchain import PromptTemplate
+from langchain_core.prompts import PromptTemplate  #
 from langchain_pinecone import PineconeVectorStore
 from langchain.vectorstores import Pinecone
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from dotenv import load_dotenv
-from langchain_chroma import Chroma
+from langchain_community.vectorstores import Chroma
 from langchain_groq import ChatGroq
 from src.helper import download_huggingface_embedding, load_data, load_data_from_uploaded_pdf, load_data_from_url, text_split
 
