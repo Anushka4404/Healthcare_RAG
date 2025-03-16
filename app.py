@@ -1,13 +1,13 @@
 import streamlit as st
 import os
-from langchain_core.prompts import PromptTemplate  #
+from langchain import PromptTemplate
 from langchain_pinecone import PineconeVectorStore
 from langchain.vectorstores import Pinecone
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from dotenv import load_dotenv
-from langchain_community.vectorstores import Chroma
+from langchain_chroma import Chroma
 from langchain_groq import ChatGroq
 from src.helper import download_huggingface_embedding, load_data, load_data_from_uploaded_pdf, load_data_from_url, text_split
 
@@ -35,9 +35,42 @@ def main():
             url = st.sidebar.text_input("Enter a URL")
     
     with col2:
-        st.title("Healthcare Chatbot")
+        st.title("Healthcare Chatbot🩺")
+        st.markdown("""
+        <style>
+        .big-font {
+            font-size: 30px !important;
+        }
+        </style>
+        <p class="big-font" style="margin-bottom: -1px">Hey, there!👋</p>
+        <p style="margin-bottom: -20px;font-size: 17px">Okay, Let's get you checked in</p>
+    """, unsafe_allow_html=True)
+        st.markdown("""
+        <style>
+        .chip {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 16px;
+            border-radius: 25px;
+            background-color: #e6fae9;
+            color: #000;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .chip:hover {
+            background-color: #9ffcad;
+        }
+        </style>
+        <p style="margin-bottom:-6px">What's the purpose of your visit?</p>
+        <div class="chip">Need a checkup</div>
+        <div class="chip">Not feeling well</div>
+        <div class="chip">Others...</div>
+    """, unsafe_allow_html=True)
+
         question_input = st.text_input("Type your Question Here", "")
-    
+
     # Initialize docsearch
     docsearch = None
     
@@ -84,10 +117,10 @@ def main():
         
         PROMPT = PromptTemplate(template=prompt_template, input_variables=["context", "question"])
         chain_type_kwargs = {"prompt": PROMPT}
-        
+        #mixtral-8x7b-32768
         llm = ChatGroq(
             api_key=GROQ_API_KEY,
-            model="mixtral-8x7b-32768",
+            model="mistral-saba-24b",
             temperature=0.5,
             max_tokens=1000,
             timeout=60
